@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,8 +57,23 @@ class _AdminScaffoldState extends State<AdminScaffold> {
                     style: TextButton.styleFrom(foregroundColor: Colors.white),
                     icon: const Icon(Icons.logout),
                     label: const Text("Logout"),
-                    onPressed: () {
-                      // TODO: Handle logout
+                    onPressed: () async {
+                      try {
+                        await FirebaseAuth.instance.signOut();
+                        if (context.mounted) {
+                          context.go(
+                            '/login',
+                          ); // or pushReplacementNamed if using Navigator
+                        }
+                      } catch (e) {
+                        // Optionally show an error
+                        print("Logout failed: $e");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Failed to logout. Try again.'),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
@@ -143,7 +159,6 @@ class _AdminScaffoldState extends State<AdminScaffold> {
     );
   }
 }
-
 
 class _SidePanel extends StatelessWidget {
   final double width;
