@@ -1,4 +1,4 @@
-package com.example.dz_admin_panel
+package com.dynamixzone.app
 
 import io.flutter.embedding.android.FlutterActivity
 
